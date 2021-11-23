@@ -30,11 +30,21 @@ dat_ml = (dat_ml
 # %%
 #look at our variables/features and imagine which ones might 
 #be good predictors of the age of a house.
-(ggplot(dat_ml, aes(x='numbaths.astype(str)', y='yrbuilt')) + 
-    geom_boxplot())
+theme_set(theme_minimal())
+###Chart evaluating the relationship between number of bathrooms and year built###
+dat_ml2 = dat_ml.dropna()
+(ggplot(dat_ml2, aes(x='numbaths.astype(str)', y='yrbuilt')) + 
+    geom_boxplot() + labs(title = "Distribution of Year Built by Number of Bathrooms \nfor Each Real Estate Sale in Denver, CO in 2013", 
+    x = "Number of Baths", y = "Year Built") + geom_hline(yintercept = 1980, color = 'red') +
+    scale_x_discrete(limits = ("0.0","1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0","10.0"),
+    labels = (0,1,2,3,4,5,6,7,8,9,10)))
 # %%
+###chart evaluating the relationship between quality rating and year built###
 (ggplot(dat_ml, aes(x='quality.astype(str)', y='yrbuilt')) + 
-    geom_boxplot())
+    geom_boxplot() + labs(title = "Distribution of Year Built by Quality Rating for \nEach Real Estate Sale in Denver, CO in 2013",
+    x = "Property Quality Rating", y = "Year Built") + geom_hline(yintercept = 1980, color = 'red') +
+    scale_x_discrete(limits = ("D","C-","C","C+","B-","B","B+","A-","A","X","X+")))
+#%%
 # https://hcad.org/hcad-resources/hcad-appraisal-codes/hcad-building-grade-adjustment/
 # E-, E, E+, D-, D, D+, C-, C, C+, B-, B, B+, A-, A, A+, X-, X, X+
 
@@ -51,7 +61,9 @@ qual_ord = dat_ml.quality.replace(replace_dictionary)
 
 # %%
 (ggplot(dat_ml, aes(x='arcstyle.astype(str)', y='yrbuilt')) + 
-    geom_boxplot() + coord_flip())
+    geom_boxplot() + coord_flip() + geom_hline(yintercept = 1980, color = "red") +
+    labs(title = "Distribution of Year Built by Type of Home for \nEach Real Estate Sale in Denver, CO in 2013",
+    x = "Type of Home", y = "Year Built"))
 # %%
 dat_ml.condition.value_counts()
 replace_dictionary = {

@@ -18,7 +18,7 @@ Colorado gave you home sales data for the [city of Denver from 2013](https://www
 
 Complete this project in R and Python as two standalone reports.
 
-- [ ] Create 2-3 charts that evaluate potential relationships between the home variables and before1980.
+- [x] Create 2-3 charts that evaluate potential relationships between the home variables and before1980.
 - [ ] Can you build a classification model (before or after 1980) that has at least 90% accuracy for the state of Colorado to use (explain your model choice and which models you tried)?
 - [ ] Will you justify your classification model by detailing the essential features in your model (a chart and a description are a must)?
 - [ ] Can you describe the quality of your classification model using 2-3 evaluation metrics? You need to provide an interpretation of each evaluation metric when you provide the value.

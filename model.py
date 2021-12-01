@@ -22,6 +22,43 @@ y_pred = dat_ml.before1980
 X_train, X_test, y_train, y_test = train_test_split(
     X_pred, y_pred, test_size = .34, random_state = 76)  
 # %%
+from sklearn.linear_model import LogisticRegression
+#%%
+logreg = LogisticRegression()
+logreg.fit(X_train,y_train)
+#%%
+test_log = logreg.predict_proba(X_test)
+auc = metrics.roc_auc_score(y_test, test_log[:,1])
+y_pred = logreg.predict(X_test)
+#%%
+print("Recall Score:", metrics.recall_score(y_test,y_pred))
+print("Logistic Regression AUC:", auc)
+print('\n')
+print('Train Accuracy:', logreg.score(X_train, y_train))
+print('Test Accuracy:', logreg.score(X_test, y_test))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%
 # build models
 clfNB = GaussianNB()
 clfGB = GradientBoostingClassifier()

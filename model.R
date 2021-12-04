@@ -21,6 +21,60 @@ dat_test <- testing(dat_split)
 
 
 
+
+
+#Random Forest Classifier
+rand_forest <- rand_forest() %>%
+    set_engine("ranger") %>%
+    set_mode("classification") %>%
+    fit(before1980 ~., data = dat_train)
+
+preds_forest <- bind_cols(
+    predict(rand_forest, new_data = dat_test),
+    predict(rand_forest, dat_test, type = "prob"),
+    truth = pull(dat_test, before1980)
+  )
+
+preds_forest %>% conf_mat(truth, .pred_class)
+
+metrics_calc <- metric_set(accuracy, bal_accuracy, precision, recall, f_meas) # nolint
+preds_forest %>% 
+    metrics_calc(truth, estimate = .pred_class)
+
+preds_forest %>% 
+    roc_curve(truth, estimate = .pred_before) %>% 
+    autoplot()
+
+
+
+#K Nearest Neighbors
+knn <- nearest_neighbor() %>%
+    set_engine("kknn") %>%
+    set_mode("classification") %>%
+    fit(before1980 ~., data = dat_train)
+
+preds_knn <- bind_cols(
+    predict(knn, new_data = dat_test),
+    predict(knn, dat_test, type = "prob"),
+    truth = pull(dat_test, before1980)
+  )
+
+preds_knn %>% conf_mat(truth, .pred_class)
+
+preds_knn %>% 
+    metrics_calc(truth, estimate = .pred_class)
+
+preds_knn %>% 
+    roc_curve(truth, estimate = .pred_before) %>% 
+    autoplot()
+
+
+
+
+
+
+
+#Class Models
 # models (using parsnip package from tidymodels)
 bt_model <- boost_tree() %>%
     set_engine(engine = "xgboost") %>%
@@ -109,3 +163,5 @@ preds_all %>%
     group_by(model) %>%
     metrics_calc(truth, estimate = .pred_class) %>%
     pivot_wider(names_from = .metric, values_from = .estimate)
+
+

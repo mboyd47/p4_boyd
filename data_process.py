@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 from plotnine import *
 #%%
-dat = pd.read_csv('SalesBook_2013.csv')
+dat = pd.read_csv('data/SalesBook_2013.csv')
  # select variables we will use in class.
  # drop homes that are not single family or duplexes
 dat_ml = (dat

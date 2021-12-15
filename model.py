@@ -19,7 +19,7 @@ from sklearn.linear_model import LogisticRegression
 import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning) 
 # %%
-dat_ml = pd.read_pickle('dat_ml.pkl')
+dat_ml = pd.read_pickle('data/dat_ml.pkl')
 # %%
 # Split our data into training and testing sets.
 X_pred = dat_ml.drop(['yrbuilt', 'before1980'], axis = 1)
@@ -168,12 +168,27 @@ print("Train Accuracy:", xgb.score(X_train, y_train))
 print("Test Accuracy:",xgb.score(X_test,y_test))
 print("XGBoost AUC:", aucx)
 #%%
-
-
-
-
-
-
+metrics.plot_roc_curve(xgb, X_test, y_test)
+#%%
+y_predx = xgb.predict(X_test)
+metrics.confusion_matrix(y_test, y_predx)
+#%%
+import dalex as dx
+#%%
+exp = dx.Explainer(xgb, X_test, y_test)
+explanation = exp.model_parts()
+plot = explanation.plot()
+#%%
+print(metrics.classification_report(y_predx, y_test))
+#%%
+sh = exp.predict_parts(X_test.iloc[1,:], type='shap',
+label="first observation")
+sh.plot()
+#%%
+compVars = ['arcstyle_ONE-STORY', 'numbaths','livearea','basement','quality','attachedGarage']
+pdp_num_red = exp.model_profile(type = 'partial', label="pdp",variables = compVars)
+ale_num_red = exp.model_profile(type = 'accumulated', label="ale",variables = compVars)
+explain_variables = pdp_num_red.plot(ale_num_red)
 
 
 
